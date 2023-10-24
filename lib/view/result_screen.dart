@@ -7,9 +7,10 @@ import 'package:quiz/view/questions_summary.dart';
 
 class ResultScreen extends StatelessWidget {
   final List<String> chosenAnser;
-  final void Function() restartQuiz;
+  final Function() restartQuiz;
 
-  const ResultScreen(this.restartQuiz, {Key? key, required this.chosenAnser})
+  const ResultScreen(
+      {Key? key, required this.chosenAnser, required this.restartQuiz})
       : super(key: key);
 
   List<Map<String, Object>> get summryData {
@@ -50,13 +51,11 @@ class ResultScreen extends StatelessWidget {
             const SizedBox(height: 30),
             QuestionsSummary(summryData),
             const SizedBox(height: 30),
-            TextButton(
-              onPressed: () => restartQuiz,
-              child: const StyledText(
-                text: 'Restart Quiz!',
-                fontSize: 25,
-                color: Colors.white,
-              ),
+            TextButton.icon(
+              onPressed: restartQuiz,
+              style: TextButton.styleFrom(foregroundColor: Colors.white),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Restart Quiz!'),
             )
           ],
         ),
