@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:quiz/styled_text.dart';
 
-class QuestionsSummary extends StatelessWidget {
-  final List<Map<String, Object>> summaryData;
+class QuestionsSummary extends StatefulWidget {
+  final List<Map<String, dynamic>> summaryData;
   const QuestionsSummary(this.summaryData, {Key? key}) : super(key: key);
 
   @override
+  State<QuestionsSummary> createState() => _QuestionsSummaryState();
+}
+
+class _QuestionsSummaryState extends State<QuestionsSummary> {
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
+    bool isShow = false;
+
+    return Flexible(
+      fit: FlexFit.tight,
+      flex: 1,
       child: SingleChildScrollView(
         child: Column(
-          children: summaryData.map(
+          children: widget.summaryData.map(
             (data) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 20),
@@ -46,16 +54,15 @@ class QuestionsSummary extends StatelessWidget {
                           const SizedBox(height: 5),
                           //User answer
                           Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               SizedBox(
                                 height: 20,
+                                width: 20,
                                 child:
                                     Lottie.asset('assets/lottie/failed.json'),
                               ),
                               const SizedBox(width: 10),
-                              Container(
-                                width: 200,
+                              Flexible(
                                 child: StyledText(
                                   text: data['user_answer'] as String,
                                   fontSize: 18,
@@ -64,24 +71,45 @@ class QuestionsSummary extends StatelessWidget {
                               ),
                             ],
                           ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                data['isShowCorrectAnswer'] =
+                                    !data['isShowCorrectAnswer'];
+                              });
+                            },
+                            child: const StyledText(
+                              text: 'View Answer',
+                              textAlign: TextAlign.right,
+                              fontSize: 16,
+                            ),
+                          ),
                           //Correct answer
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 22,
-                                child: Lottie.asset('assets/lottie/done.json'),
-                              ),
-                              const SizedBox(width: 10),
-                              Container(
-                                width: 200,
-                                child: StyledText(
-                                  text: data['correct_answer'] as String,
-                                  fontSize: 18,
-                                  color: Colors.green,
+                          Visibility(
+                            maintainAnimation: true,
+                            maintainState: true,
+                            visible: data['isShowCorrectAnswer'],
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child:
+                                      Lottie.asset('assets/lottie/done.json'),
                                 ),
-                              ),
-                            ],
-                          )
+                                const SizedBox(width: 10),
+                                Container(
+                                  decoration: const BoxDecoration(),
+                                  width: 200,
+                                  child: StyledText(
+                                    text: data['correct_answer'] as String,
+                                    fontSize: 18,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),

@@ -43,8 +43,9 @@ class _QuizState extends State<Quiz> {
   }
 
   void restartQuiz() {
+    selectedAnswer.clear();
     setState(() {
-      activeScreen = 'question-screen';
+      activeScreen = 'home-screen';
     });
   }
 
@@ -73,6 +74,7 @@ class _QuizState extends State<Quiz> {
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
           decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -84,6 +86,7 @@ class _QuizState extends State<Quiz> {
           child: screenWidget,
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
